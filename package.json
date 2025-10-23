@@ -4,7 +4,9 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"agent": "npx tsx agent.ts"
+		"agent": "npx tsx agent.ts",
+		"build": "npm --prefix app run build",
+		"dev": "npm --prefix app run dev"
 	},
 	"dependencies": {
 		"dotenv": "^17.1.0",
