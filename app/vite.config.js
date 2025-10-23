@@ -5,8 +5,8 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   plugins: [tailwindcss()],
   build: {
-    ssr: `./api/index.ts`,
-    outDir: `dist`,
+    outDir: 'dist',
+    emptyOutDir: true,
   },
   server: {
     port: 3100,
