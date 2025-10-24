@@ -33,7 +33,7 @@ export function Agent() {
     setIsLoading(true);
 
     try {
-      const apiResponse = await fetch("http://localhost:3101/api/langbase", {
+      const apiResponse = await fetch("/api/langbase", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ input: input.trim() })
@@ -52,12 +52,12 @@ export function Agent() {
       if (!apiResponse.ok || (data && typeof data === 'object' && (data.success === false || data.error))) {
         // Extract the most specific error message
         let errorMessage = data.error || data.message || `Error: ${apiResponse.status}`;
-        
+
         // Handle specific API key error
         if (errorMessage.includes("Incorrect API key provided") || errorMessage.includes("401")) {
           errorMessage = "API configuration error: Please check your API keys in the environment settings. The system may be using an incorrect API key format.";
         }
-        
+
         throw new Error(errorMessage);
       }
 
@@ -162,9 +162,9 @@ export function Agent() {
                   disabled={isLoading}
                 />
               </div>
-              <Button 
-                type="submit" 
-                className="w-full" 
+              <Button
+                type="submit"
+                className="w-full"
                 disabled={isLoading || !input.trim()}
               >
                 {isLoading ? (
