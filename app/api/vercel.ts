@@ -1,7 +1,5 @@
+import { handle } from 'hono/vercel';
 import { app } from './app';
 
-// Vercel serverless handler
-export default app;
-
-// Optional config (uncomment for edge runtime if suitable)
-// export const config = { runtime: 'edge' };
+// Export the Hono app with Vercel adapter
+export default handle(app);

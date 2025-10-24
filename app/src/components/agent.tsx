@@ -15,12 +15,26 @@ import { toast } from "sonner";
 import ReactMarkdown from 'react-markdown';
 import { Activity, AlertTriangle, Brain, Calendar, Heart, Hospital, MessageSquare, TrendingUp, Users, Zap } from "lucide-react";
 
+interface DetailedAnalysis {
+  predictions?: string;
+  recommendations?: string;
+  public_alerts?: string;
+  data_analysis?: string;
+}
+
+interface AgentResponse {
+  conversational_response?: string;
+  confidence_level?: string;
+  detailed_analysis?: DetailedAnalysis;
+  timestamp?: string | number;
+}
+
 export function Agent() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [response, setResponse] = useState(null);
+  const [response, setResponse] = useState<AgentResponse | null>(null);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!input.trim()) {
       toast.error("Please enter your query", {
@@ -80,7 +94,8 @@ export function Agent() {
       console.error("Error processing request:", error);
 
       // Show error toast with specific message
-      toast.error(error.message || "An error occurred while processing your request", {
+      const errorMessage = error instanceof Error ? error.message : "An error occurred while processing your request";
+      toast.error(errorMessage, {
         closeButton: true,
         duration: Infinity
       });
@@ -91,7 +106,7 @@ export function Agent() {
     }
   };
 
-  const getConfidenceColor = (level) => {
+  const getConfidenceColor = (level: string | undefined) => {
     switch (level?.toLowerCase()) {
       case 'high': return 'bg-green-500';
       case 'medium': return 'bg-yellow-500';
