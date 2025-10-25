@@ -1,6 +1,8 @@
 {
+    "rootDirectory": "app",
     "buildCommand": "npm run build",
-    "outputDirectory": "app/dist",
+    "installCommand": "npm install",
+    "outputDirectory": "dist",
     "functions": {
         "api/**/*.ts": {
             "memory": 1024,
