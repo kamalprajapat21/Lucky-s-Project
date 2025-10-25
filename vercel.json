@@ -1,26 +1,10 @@
 {
-    "version": 2,
-    "builds": [
-        {
-            "src": "app/api/vercel.ts",
-            "use": "@vercel/node"
-        },
-        {
-            "src": "app/package.json",
-            "use": "@vercel/static-build",
-            "config": {
-                "distDir": "app/dist"
-            }
+    "buildCommand": "npm run build",
+    "outputDirectory": "app/dist",
+    "functions": {
+        "api/**/*.ts": {
+            "memory": 1024,
+            "maxDuration": 30
         }
-    ],
-    "routes": [
-        {
-            "src": "/api/(.*)",
-            "dest": "app/api/vercel.ts"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "app/dist/$1"
-        }
-    ]
+    }
 }

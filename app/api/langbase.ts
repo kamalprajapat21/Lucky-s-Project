@@ -6,15 +6,29 @@ dotenv.config();
 // Basic API endpoint
 export const registerLangbaseEndpoint = (app: Hono) => {
   app.post("/api/langbase", async (c: Context) => {
-    const request = new Request(c.req.url, {
-      method: c.req.method,
-      headers: {
-        "Content-Type": c.req.header("Content-Type") || "application/json",
-        Authorization: c.req.header("Authorization") || "",
-      },
-      body: JSON.stringify(await c.req.json()),
-    });
-    return handleAgentRequest(request);
+    // Debug: log if API key is loaded
+    const apiKeyLoaded = process.env.LANGBASE_API_KEY ? 'yes' : 'no';
+    console.log('LANGBASE_API_KEY loaded:', apiKeyLoaded);
+    try {
+      const request = new Request(c.req.url, {
+        method: c.req.method,
+        headers: {
+          "Content-Type": c.req.header("Content-Type") || "application/json",
+          Authorization: c.req.header("Authorization") || "",
+        },
+        body: JSON.stringify(await c.req.json()),
+      });
+      return await handleAgentRequest(request);
+    } catch (err) {
+      // Always log and return error message for debugging
+      console.error('Langbase endpoint error:', err);
+      return c.json({
+        success: false,
+        error: err instanceof Error ? err.message : String(err),
+        stack: err instanceof Error ? err.stack : undefined,
+        envLoaded: apiKeyLoaded
+      }, 500);
+    }
   });
 };
 
